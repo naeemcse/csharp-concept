@@ -11,12 +11,19 @@ namespace AdoNetExample
     public class AdonetUtility
     {
         private readonly string _connectionString = "Server=DESKTOP-8DI1SVB\\SQLEXPRESS;Database=CSharpB18;User Id=csharpb18;Password=123456; Trust Server Certificate=True ";
-        public void RunSql(string sql)
+        public void RunSql(string sql, Dictionary<string, object> parameters)
         {
+           
             SqlConnection sqlConnection= new SqlConnection(_connectionString);
             SqlCommand sqlCommand= new SqlCommand(sql,sqlConnection);
 
-            if(sqlConnection.State != System.Data.ConnectionState.Open)
+            foreach (var parameter in parameters)
+            {
+                sqlCommand.Parameters.Add(new SqlParameter(parameter.Key, parameter.Value));
+            }
+
+
+            if (sqlConnection.State != System.Data.ConnectionState.Open)
                 sqlConnection.Open();
 
 
@@ -28,10 +35,18 @@ namespace AdoNetExample
 
         }
 
-        public List<Dictionary<string, object>> GetData(string sql)
+        public List<Dictionary<string, object>> GetData(string sql,
+            Dictionary<string, object> parameters
+            )
         {
             SqlConnection sqlConnection = new SqlConnection(_connectionString);
             SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
+
+            foreach (var parameter in parameters) 
+            { 
+                sqlCommand.Parameters.Add(new SqlParameter(parameter.Key,parameter.Value));
+            }
+
 
             if (sqlConnection.State != System.Data.ConnectionState.Open)
                 sqlConnection.Open();
