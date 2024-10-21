@@ -10,12 +10,18 @@ namespace AdoNetExample
 {
     public class AdonetUtility
     {
-        private readonly string _connectionString = "Server=DESKTOP-8DI1SVB\\SQLEXPRESS;Database=CSharpB18;User Id=csharpb18;Password=123456; Trust Server Certificate=True ";
+        private readonly string _connectionString;
+  
+        public AdonetUtility(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public void RunSql(string sql, Dictionary<string, object> parameters)
         {
            
-            SqlConnection sqlConnection= new SqlConnection(_connectionString);
-            SqlCommand sqlCommand= new SqlCommand(sql,sqlConnection);
+          using  SqlConnection sqlConnection= new SqlConnection(_connectionString);
+         using   SqlCommand sqlCommand= new SqlCommand(sql,sqlConnection);
 
             foreach (var parameter in parameters)
             {
@@ -28,10 +34,10 @@ namespace AdoNetExample
 
 
             int rowExpected = sqlCommand.ExecuteNonQuery();
-
-            sqlConnection.Close();
+            // as i am using so not need again to dispose, it call automaticall.
+          /*  sqlConnection.Close();
             sqlConnection.Dispose();
-            sqlCommand.Dispose();
+            sqlCommand.Dispose();*/
 
         }
 
@@ -39,8 +45,8 @@ namespace AdoNetExample
             Dictionary<string, object> parameters
             )
         {
-            SqlConnection sqlConnection = new SqlConnection(_connectionString);
-            SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
+         using   SqlConnection sqlConnection = new SqlConnection(_connectionString);
+         using   SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
 
             foreach (var parameter in parameters) 
             { 
