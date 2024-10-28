@@ -44,6 +44,9 @@ trainingDbContext.SaveChanges();
 
 /*************************************************************/
 
+
+/********************************
+ * One to Many Data insert
 Course course = new Course();
 course.Title = "Laravel";
 course.Fees = 1200;
@@ -62,6 +65,40 @@ course.Topics = new List<Topics>();
 course.Topics.Add(topics1);
 course.Topics.Add(topics2);
 
+trainingDbContext.Courses.Add(course);
+trainingDbContext.SaveChanges();
+
+******************/
+
+Course course = new Course();
+course.Title = "DevOps";
+course.Fees = 10000;
+course.IsActive = true;
+course.StartDate = new DateTime(2024, 3, 9);
+
+
+Topics topics = new Topics();
+topics.Name = "Basics Syntex";
+topics.Duration = 200;
+
+course.Topics = new List<Topics> { topics };
+
+Student student = new Student();
+student.Name = "Naeem";
+
+Student student2 = new Student();
+student2.Name = "Juthi";
+
+StudentEnrollment enrollment = new StudentEnrollment();
+enrollment.Student = student;
+enrollment.Courses = course;
+
+StudentEnrollment enrollment1 = new StudentEnrollment();
+enrollment1.Student = student2;
+enrollment1.Courses = course;
+
+// Adding 
+course.CourseStudnet = new List<StudentEnrollment> { enrollment , enrollment1};
 trainingDbContext.Courses.Add(course);
 trainingDbContext.SaveChanges();
 
