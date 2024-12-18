@@ -1,0 +1,36 @@
+# Ignore all files
+*
+
+# Allow C# files
+!**/*.cs
+
+# Allow the .gitignore file itself
+!.gitignore
+
+# Allow necessary directory structure
+!*/
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+.vscode/
+
+# Ignore Visual Studio Code workspace settings
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+
+# Ignore project files
+*.csproj
+*.sln
+*.vbproj
+*.fsproj
+*.dbmdl
+*.dbproj
+*.jfm
