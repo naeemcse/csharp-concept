@@ -60,6 +60,9 @@ internal class Program
     }
 
 
+
+
+    /*
     public static void XmlCreator(object obj)
     {
         if (obj == null) return;
@@ -168,24 +171,70 @@ internal class Program
             //Console.WriteLine(xml.ToString());
         }
     }
+    */
 
+    public static void XmlCreator(object obj, StringBuilder xml = null, bool isRoot = true)
+    {
+        if (obj == null) return;
 
+        if (xml == null)
+        {
+            xml = new StringBuilder();
+        }
 
+        Type type = obj.GetType();
 
+        if (isRoot)
+        {
+            xml.Append("<" + type.Name + ">");
+        }
 
+        PropertyInfo[] properties = type.GetProperties();
+        foreach (PropertyInfo property in properties)
+        {
+          
+            object value = property.GetValue(obj);
+            xml.Append("<" + property.Name + ">");
 
+            if (property.PropertyType.IsPrimitive || property.PropertyType == typeof(string) || property.PropertyType == typeof(DateTime) || property.PropertyType.IsValueType)
+            {
+                xml.Append(value);
+            }
+            else if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType) && property.PropertyType != typeof(string))
+            {
+                if (value != null)
+                {
+                   
+                    foreach (var item in (IEnumerable)value)
+                    {
+                        if (item is string)
+                        {
+                            xml.Append("<String>");
+                            xml.Append(item);
+                            xml.Append("</String>");
+                        }
+                        else
+                        {
+                            xml.Append("<" + item.GetType().Name + ">");
+                            XmlCreator(item, xml, false);
+                            xml.Append("</" + item.GetType().Name + ">");
+                        }
+                    }            
+                }
+            }
+            else
+            {
+                XmlCreator(value, xml, false);
+            }
 
+            xml.Append("</" + property.Name + ">");
+        }
 
-
-
-
-
-
-
-
-
-
-
+        if (isRoot)
+        {
+            xml.Append("</" + type.Name + ">");
+        }
+    }
 
     // Genetate xml manually 
     private static void GenerateXml(object obj)
