@@ -8,17 +8,21 @@ namespace Demo.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IItem _item;
+        private readonly IProduct _product;
 
-        public HomeController(ILogger<HomeController> logger, IItem item)
+
+        public HomeController(ILogger<HomeController> logger, IItem item, [FromKeyedServices("Config1")] IProduct product )
         {
             _logger = logger;
             _item = item;
+            _product = product;
         }
 
         public IActionResult Index()
         {
             var amount = _item.GetAmount();
-            _logger.LogInformation("I ama index page ");
+            var price = _product.GetPrice(); 
+            _logger.LogInformation("I am a index page ");
             return View();
         }
 

@@ -24,11 +24,21 @@ try
 
     // Add services to the container.
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    #region autofag
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
     builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
         containerBuilder.RegisterModule(new WebModule());
     });
+    #endregion
+
+    #region Service Collection
+
+    builder.Services.AddKeyedScoped<IProduct, Product1>("Config1");
+    builder.Services.AddKeyedScoped<IProduct, Product2>("Config2");
+
+    #endregion
+
     #region Serilog Configuration
     builder.Host.UseSerilog((contex, lc) => lc.
     MinimumLevel.Debug().MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
