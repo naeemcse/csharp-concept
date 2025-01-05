@@ -10,7 +10,6 @@ namespace Demo.Controllers
         private readonly IItem _item;
         private readonly IProduct _product;
 
-
         public HomeController(ILogger<HomeController> logger, IItem item, [FromKeyedServices("Config1")] IProduct product )
         {
             _logger = logger;
